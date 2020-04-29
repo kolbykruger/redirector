@@ -42,7 +42,7 @@
 import PageHeading from '@/components/PageHeading.vue';
 
 export default {
-    name: 'Stage-1',
+    name: 'StageOne',
     components: {
         PageHeading
     },

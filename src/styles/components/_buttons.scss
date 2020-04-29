@@ -52,6 +52,10 @@ input[type="submit"] {
         background: $color-s0;
         color: #fff;
     }
+
+    &.button-large {
+        font-size: 1.25rem;
+    }
 }
 
 .buttons {

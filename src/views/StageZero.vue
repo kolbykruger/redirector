@@ -52,7 +52,7 @@
 import PageHeading from '@/components/PageHeading.vue'
 
 export default {
-    name: 'Stage-0',
+    name: 'StageZero',
     data() {
         return {
             newUrl: 'https://google.com/',

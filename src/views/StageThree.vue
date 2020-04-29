@@ -61,7 +61,7 @@ import MatchLinks from '@/components/MatchLinks.vue';
 import PageHeading from '@/components/PageHeading.vue';
 
 export default {
-    name: 'Stage-3',
+    name: 'StageThree',
     components: {
         MatchLinks,
         PageHeading

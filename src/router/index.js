@@ -20,33 +20,33 @@ Vue.use(VueRouter)
 },
 {
   path: '/stage-0',
-  name: 'Stage 0',
-  component: () => import('../views/Stage-0.vue')
+  name: 'StageZero',
+  component: () => import('../views/StageZero.vue')
 },
   {
     path: '/stage-1',
-    name: 'Stage 1',
-    component: () => import('../views/Stage-1.vue')
+    name: 'StageOne',
+    component: () => import('../views/StageOne.vue')
 },
 {
   path: '/stage-2',
-  name: 'Stage 2',
-  component: () => import('../views/Stage-2.vue')
+  name: 'StageTwo',
+  component: () => import('../views/StageTwo.vue')
 },
 {
   path: '/stage-3',
-  name: 'Stage 3',
-  component: () => import('../views/Stage-3.vue')
+  name: 'StageThree',
+  component: () => import('../views/StageThree.vue')
 },
 {
   path: '/stage-4',
-  name: 'Stage 4',
-  component: () => import('../views/Stage-4.vue')
+  name: 'StageFour',
+  component: () => import('../views/StageFour.vue')
 },
 {
   path: '/stage-5',
-  name: 'Stage 5',
-  component: () => import('../views/Stage-5.vue')
+  name: 'StageFive',
+  component: () => import('../views/StageFive.vue')
 }
 ]
 

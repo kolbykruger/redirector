@@ -12,10 +12,10 @@
                     <h3>Old Links</h3>
 
                     <div class="link-search">
-                        <input type="text" name="" value=""
+                        <input type="text" name="search-old" value=""
                             placeholder="Search..."
-                            v-on:keyup="searchOldLinks"
-                            v-on:blur="searchOldBlur"
+                            v-on:keyup="searchHandler"
+                            v-on:blur="searchBlur"
                             v-model="searchOldVal"
                             :class="{'no-results': searchOldFalse}">
                     </div>
@@ -53,6 +53,7 @@
                         </div>
 
                         <div class="drop-new" v-if="selectedNew != ''">
+                            <span>Redirects to</span>
                             <Links :links="selectedNew" @childToParent="removeNewFromCenter"></Links>
                         </div>
 
@@ -79,10 +80,10 @@
                     <h3>New Links</h3>
 
                     <div class="link-search">
-                        <input type="text" name="" value=""
+                        <input type="text" name="search-new" value=""
                             placeholder="Search..."
-                            v-on:keyup="searchNewLinks"
-                            v-on:blur="searchNewBlur"
+                            v-on:keyup="searchHandler"
+                            v-on:blur="searchBlur"
                             v-model="searchNewVal"
                             :class="{'no-results': searchNewFalse}">
                     </div>
@@ -159,6 +160,16 @@
         </div>
     </section>
 
+    <section class="stage-settings">
+        <div class="container">
+            <p><strong>Settings</strong></p>
+            <div>
+                <input type="checkbox" id="checkbox" v-model="linkSearchFields">
+                <label for="checkbox">Search both</label>
+            </div>
+        </div>
+    </section>
+
   </div>
 </template>
 
@@ -169,7 +180,7 @@ import RedirectListing from '@/components/RedirectListing';
 import PageHeading from '@/components/PageHeading.vue';
 
 export default {
-    name: 'Stage-4',
+    name: 'StageFour',
     components: {
         Links,
         LinksAlternate,
@@ -188,6 +199,7 @@ export default {
             searchNew: [],
             searchNewVal: '',
             searchNewFalse: false,
+            linkSearchFields: false,
             redirectList: [],
             stageError: '',
             stageInfo: 'Click on a link to add it to the center for pairing. You can select multiple old links, but only one new link.'
@@ -249,14 +261,18 @@ export default {
         },
         searchOldLinks(e) {
             let value = e.target.value;
+
             if (!value) {
                 this.searchOld = [];
-                this.searchNewVal = '';
+                this.searchOldVal = '';
                 this.searchOldFalse = false;
                 return false;
             }
+            if (this.linkSearchFields) {
+                return false
+            }
 
-            let filtered = this.oldLinks.filter((item) => item.url.includes(value));
+            let filtered = this.searchFilter(this.oldLinks, value);
             if (filtered.length < 1) {
                 this.searchOld = filtered;
                 this.searchOldFalse = true;
@@ -267,14 +283,18 @@ export default {
         },
         searchNewLinks(e) {
             let value = e.target.value;
+
             if (!value) {
                 this.searchNew = [];
                 this.searchNewVal = '';
                 this.searchNewFalse = false;
                 return false;
             }
+            if (this.linkSearchFields) {
+                return false
+            }
 
-            let filtered = this.newLinks.filter((item) => item.url.includes(value));
+            let filtered = this.searchFilter(this.newLinks, value);
             if (filtered.length < 1) {
                 this.searchNew = filtered;
                 this.searchNewFalse = true;
@@ -283,15 +303,56 @@ export default {
                 this.searchNewFalse = false;
             }
         },
-        searchNewBlur() {
+        searchFilter(arr, value) {
+            return arr.filter((item) => item.url.includes(value));
+        },
+        linkedSearch(e) {
+            let value = e.target.value;
+
+            if (e.target.name == 'search-old') {
+                this.searchNewVal = value
+            }
+            if (e.target.name == 'search-new') {
+                this.searchOldVal = value
+            }
+
+            if (this.linkSearchFields) {
+                let filteredOld = this.searchFilter(this.oldLinks, value);
+                if (filteredOld.length < 1) {
+                    this.searchOld = filteredOld;
+                    this.searchOldFalse = true;
+                } else {
+                    this.searchOld = filteredOld;
+                    this.searchOldFalse = false;
+                }
+                let filteredNew = this.searchFilter(this.newLinks, value);
+                if (filteredNew.length < 1) {
+                    this.searchNew = filteredNew;
+                    this.searchNewFalse = true;
+                } else {
+                    this.searchNew = filteredNew;
+                    this.searchNewFalse = false;
+                }
+            }
+        },
+        searchHandler(e) {
+
+            if (this.linkSearchFields) {
+                this.linkedSearch(e)
+            } else {
+                if (e.target.name == 'search-new') {
+                    this.searchNewLinks(e)
+                }
+                if (e.target.name == 'search-old') {
+                    this.searchOldLinks(e)
+                }
+            }
+        },
+        searchBlur() {
             setTimeout(() => {
                 this.searchNew = [];
                 this.searchNewVal = '';
                 this.searchNewFalse = false;
-            }, 100);
-        },
-        searchOldBlur() {
-            setTimeout(() => {
                 this.searchOld = [];
                 this.searchOldVal = '';
                 this.searchOldFalse = false;
