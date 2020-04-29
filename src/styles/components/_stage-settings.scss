@@ -10,6 +10,7 @@
 
     input[type="checkbox"] {
         width: auto;
+        margin: 0;
         margin-right: 0.5em;
     }
 
@@ -17,9 +18,10 @@
         display: flex;
         align-items: center;
         flex-flow: row nowrap;
-    }
+        font-size: 0.875rem;
 
-    p {
-        margin-bottom: 0.25em;
+        &:not(:last-of-type) {
+            margin-bottom: 0.5em;
+        }
     }
 }
