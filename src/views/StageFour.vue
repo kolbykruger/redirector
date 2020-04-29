@@ -48,7 +48,7 @@
                             <div class="links links-new" v-for="(link, index) in selectedOld" :key="index">
                                 <Links :links="link" @childToParent="removeOldFromCenter"></Links>
                             </div>
-                            <svg width="20" height="30" viewBox="0 0 20 30" class="dot-indicators">
+                            <svg width="20" height="30" viewBox="0 0 20 30" class="dot-indicators" v-if="selectedNew != ''">
                                 <path d="M10 40 L10 -10" class="dot-indicators-path"></path>
                             </svg>
                         </div>
