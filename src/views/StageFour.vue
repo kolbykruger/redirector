@@ -287,6 +287,11 @@ export default {
             if (this.oldLinks.includes(value)) {
                 this.oldLinks = this.oldLinks.filter((item) => item.url !== value.url)
             }
+            if (this.searchOld.length > 1) {
+                if (this.searchOld.includes(value)) {
+                    this.searchOld = this.searchOld.filter((item) => item.url !== value.url)
+                }
+            }
         },
         moveNewToCenter(value) {
             this.stageInfo = '';
