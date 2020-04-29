@@ -48,7 +48,7 @@
     <section class="stage-navigation buttons">
         <div class="container">
             <div class="group group-center buttons">
-                <router-link class="button button-secondary" to="/stage-2">Back</router-link>
+                <!-- <router-link class="button button-secondary" to="/stage-2">Back</router-link> -->
             </div>
         </div>
     </section>

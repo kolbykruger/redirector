@@ -29,7 +29,7 @@
     <section class="stage-navigation buttons">
         <div class="container">
             <div class="group group-center buttons">
-                <router-link class="button button-secondary" to="/stage-1">Back</router-link>
+                <!-- <router-link class="button button-secondary" to="/stage-1">Back</router-link> -->
                 <button class="button" @click="parseActions">Next -></button>
             </div>
         </div>

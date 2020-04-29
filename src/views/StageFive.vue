@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <PageHeading title="Your Redirects" summary="Here they are at last!"></PageHeading>
+    <PageHeading title="The redirects" summary="Below you'll find your created redirects in both Apache and Nginx formats."></PageHeading>
 
     <!-- <section class="stage-options">
         <div class="container">
@@ -47,7 +47,7 @@
     <section class="stage-navigation buttons">
         <div class="container">
             <div class="group group-center buttons">
-                <router-link class="button button-secondary" to="/stage-4">Back</router-link>
+                <!-- <router-link class="button button-secondary" to="/stage-4">Back</router-link> -->
             </div>
         </div>
     </section>

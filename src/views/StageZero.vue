@@ -55,9 +55,9 @@ export default {
     name: 'StageZero',
     data() {
         return {
-            newUrl: 'https://google.com/',
-            devUrl: 'https://google.com/',
-            oldUrl: 'https://google.com/',
+            newUrl: '',
+            devUrl: '',
+            oldUrl: '',
             stageError: ''
         }
     },
@@ -69,7 +69,7 @@ export default {
             this.stageError = '';
 
             if (!this.newUrl || !this.devUrl || !this.oldUrl) {
-                this.stageError = 'Please complete in both of the URL fields.'
+                this.stageError = 'Please specify valid URLs for all fields.'
                 return false
             }
 

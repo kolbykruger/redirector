@@ -155,7 +155,7 @@
     <section class="stage-navigation buttons">
         <div class="container">
             <div class="group group-center buttons">
-                <router-link class="button button-secondary" to="/stage-3">Back</router-link>
+                <!-- <router-link class="button button-secondary" to="/stage-3">Back</router-link> -->
                 <button type="button" name="button" class="button" @click="finalStage">Next -></button>
             </div>
         </div>
