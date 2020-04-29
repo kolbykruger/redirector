@@ -9,5 +9,8 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  mounted() {
+      window.scrollTo(0,0)
+  },
   render: h => h(App)
 }).$mount('#app')
