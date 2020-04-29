@@ -1,6 +1,8 @@
 <template>
   <button class="link link-draggable"
-    @click="$emit('childToParent', links)">
+    @click.exact="$emit('childToParent', links)"
+    @click.ctrl.exact="$emit('linkData', links)"
+    >
      <span>{{ links.pathname }}</span>
  </button>
 </template>
