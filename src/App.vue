@@ -14,7 +14,9 @@
         </div>
     </header>
     <main>
-        <router-view/>
+        <transition name="fade">
+            <router-view/>
+        </transition>
     </main>
     <footer>
         <div class="container">
@@ -23,3 +25,14 @@
     </footer>
   </div>
 </template>
+
+<style lang="css" scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter,
+.fade-leave {
+    opacity: 0;
+}
+</style>
