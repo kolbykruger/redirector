@@ -1,0 +1,22 @@
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+  @return $number;
+}
+
+@mixin fluid($property, $min-font-size, $max-font-size, $args: null) {
+    & {
+        $max-vw: 75rem;
+        $min-vw: 48rem;
+
+        #{$property}: $min-font-size $args;
+
+        @media screen and (min-width: $min-vw) {
+            #{$property}: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})) $args;
+        }
+        @media screen and (min-width: $max-vw) {
+            #{$property}: $max-font-size $args;
+        }
+    }
+}

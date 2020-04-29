@@ -1,0 +1,23 @@
+h1 {
+    @include fluid('font-size', 2rem, 3.25rem);
+    line-height: 1.2;
+}
+
+h2 {
+    @include fluid('font-size', 1.75rem, 2.25rem);
+}
+
+h3 {
+    @include fluid('font-size', 1.5rem, 1.75rem);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.25;
+    margin-bottom: 0.5em;
+}
+
+p, ol, ul, kbd, code, a {
+    @include fluid('font-size', 1.125rem, 1.25rem);
+}

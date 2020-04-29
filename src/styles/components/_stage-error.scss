@@ -1,0 +1,12 @@
+.stage-error {
+    display: inline-block;
+    color: #C53030;
+    background: #FED7D7;
+    margin-top: 1em;
+    padding: 1em;
+    border-left: 0.25em solid #C53030;
+    border-radius: 0.25em;
+    user-select: none;
+    width: 100%;
+    max-width: 600px;
+}

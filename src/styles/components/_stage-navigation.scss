@@ -1,0 +1,27 @@
+.stage-navigation {
+    margin-top: 3em;
+
+    .container {
+        position: relative;
+        padding-top: 3em;
+
+        &::before {
+            content: '*****';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 0.6em;
+            margin-right: -0.6em;
+            opacity: 0.25;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        margin: 0 0.5em
+    }
+}

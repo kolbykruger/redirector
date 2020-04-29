@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Sen:wght@400;700;800&display=swap');
+
+body {
+    color: $color-p1;
+    background: $color-p4;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+h1, h2, h3 {
+    font-family: 'Sen', sans-serif;
+    color: $color-p0;
+}
+
+p {
+    margin-bottom: 1em;
+    line-height: 1.6;
+}
+
+main {
+    min-height: 90vh;
+}
+
+section,
+header,
+footer {
+    width: 100%;
+
+    .container {
+        max-width: $container-width;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .group {
+        display: flex;
+        flex-flow: row wrap;
+
+        &-center {
+            justify-content: center;
+        }
+    }
+}

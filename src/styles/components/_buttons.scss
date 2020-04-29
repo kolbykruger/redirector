@@ -1,0 +1,65 @@
+a.button,
+button.button,
+input[type="submit"] {
+    display: inline-flex;
+    appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    border: none;
+    background: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    background: none;
+    color: $color-p1;
+    border: 2px solid $color-p2;
+    padding: 0.65em 0.75em;
+    border-radius: 0.25em;
+    font-weight: 600;
+    line-height: 1;
+    transition: 150ms ease-in-out;
+
+    &:hover,
+    &:focus {
+        background: $color-p3;
+        color: $color-p0;
+        border-color: $color-p1;
+    }
+
+    &.button-secondary {
+        border-color: $color-p4;
+        background: $color-p4;
+        color: $color-p2;
+
+        &:hover,
+        &:focus {
+            background: $color-p3;
+            border-color: $color-p3;
+        }
+    }
+
+    &.button-active {
+        border-color: $color-p1;
+        background: $color-p1;
+        color: #fff;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+
+    &-center {
+        justify-content: center;
+    }
+
+    a.button,
+    button.button,
+    input[type="submit"] {
+        margin: 0 0.25em;
+    }
+}

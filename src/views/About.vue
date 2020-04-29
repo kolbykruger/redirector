@@ -1,5 +1,21 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+
+      <PageHeading title="About Redirector" summary=""/>
+
   </div>
 </template>
+
+<script>
+import PageHeading from '@/components/PageHeading.vue';
+
+export default {
+    name: 'about',
+    components: {
+        PageHeading
+    }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

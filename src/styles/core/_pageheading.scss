@@ -1,0 +1,22 @@
+.pageheading {
+    height: 26vh;
+    background: $color-p3;
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    margin-bottom: 3em;
+
+    .container {
+        max-width: $container-width;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    h1 {
+        margin-bottom: 0.125em;
+    }
+
+    p {
+        margin: 0;
+    }
+}
