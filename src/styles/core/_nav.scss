@@ -1,0 +1,11 @@
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    a {
+        text-decoration: none;
+        margin-left: 1em;
+        color: inherit;
+    }
+}

@@ -20,7 +20,7 @@ p {
 }
 
 main {
-    min-height: 90vh;
+    grid-area: main;
 }
 
 section,
@@ -56,4 +56,16 @@ pre {
         font-family: 'Source Code Pro', monospace;
         cursor: text;
     }
+}
+
+#app {
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        'header'
+        'main'
+        'footer';
+    grid-template-rows: min-content auto min-content;
+    grid-template-columns: 100%;
+    justify-content: space-between;
 }

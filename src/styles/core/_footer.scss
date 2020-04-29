@@ -1,6 +1,13 @@
 footer {
+    grid-area: footer;
     margin-top: 2em;
     padding: 1em;
-    background: $color-p0;
+    background: $color-p3;
     color: #fff;
+
+    a {
+        text-decoration: none;
+        color: $color-p1;
+        font-size: 0.875rem;
+    }
 }

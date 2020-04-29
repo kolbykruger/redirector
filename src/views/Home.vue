@@ -1,10 +1,10 @@
 <template>
   <div class="home">
 
-    <PageHeading title="Welcome to Redirector!" summary="Let us help you with your 301 redirects!"/>
+    <PageHeading title="Welcome to Redirector!" summary="The tool designed to help you bulk create 301 redirects."/>
     <section>
         <div class="container">
-            <p>All of your provided information is processed client-side, meaning we don't collect or save any of your information.</p>
+            <p>We currently offer <strong>Apache (.htaccess)</strong> and <strong>Nginx (nginx.conf)</strong> outputs.</p>
         </div>
     </section>
     <section class="start-app">
@@ -12,7 +12,6 @@
             <br>
             <div class="group buttons">
                 <router-link class="button button-green button-large" to="/stage-0">Start making redirects -></router-link>
-                <router-link class="button button-secondary button-large" to="/about">What is this?</router-link>
             </div>
         </div>
     </section>

@@ -2,11 +2,15 @@
   <div id="app">
     <header>
         <div class="container">
-            <div id="nav">
-              <router-link to="/">Home</router-link> |
-              <router-link to="/about">About</router-link> |
-              <router-link to="/stage-0">Start</router-link>
+            <div class="logo">
+                <router-link to="/">
+                    <span class="icon">-></span> Redirector
+                </router-link>
             </div>
+            <nav>
+              <!--router-link to="/about">About</router-link-->
+              <router-link class="button button-green" to="/stage-0">Start</router-link>
+          </nav>
         </div>
     </header>
     <main>
@@ -14,7 +18,7 @@
     </main>
     <footer>
         <div class="container">
-            footer
+            <a href="https://github.com/kolbykruger/redirector" target="_blank">Github</a>
         </div>
     </footer>
   </div>

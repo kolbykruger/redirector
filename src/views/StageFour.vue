@@ -21,7 +21,6 @@
                     </div>
 
                     <div class="link-list">
-
                         <div v-if="searchOld.length < 1">
                             <div class="links links-old" v-for="(link, index) in oldLinks" :key="index">
                                 <Links :links="link" @childToParent="moveOldToCenter"></Links>
@@ -46,19 +45,21 @@
 
                     <div class="matching-block">
 
-                        <div class="drop-old">
+                        <div class="drop-old"  v-if="selectedOld != ''">
                             <div class="links links-new" v-for="(link, index) in selectedOld" :key="index">
                                 <Links :links="link" @childToParent="removeOldFromCenter"></Links>
                             </div>
+                            <svg width="20" height="30" viewBox="0 0 20 30" class="dot-indicators">
+                                <path d="M10 40 L10 -10" class="dot-indicators-path"></path>
+                            </svg>
                         </div>
 
                         <div class="drop-new" v-if="selectedNew != ''">
-                            <span>Redirects to</span>
                             <Links :links="selectedNew" @childToParent="removeNewFromCenter"></Links>
                         </div>
 
                         <div class="drop-actions buttons buttons-center">
-                            <button class="button button-green" type="button" name="button" @click="addRedirect">Create redirect</button>
+                            <button class="button button-green" type="button" name="button" title="Press enter to quickly add redirects." @click="addRedirect">Create redirect</button>
                         </div>
 
                     </div>
@@ -163,7 +164,7 @@
     <section class="stage-settings">
         <div class="container">
             <p><strong>Settings</strong></p>
-            <div>
+            <div class="setting">
                 <input type="checkbox" id="checkbox" v-model="linkSearchFields">
                 <label for="checkbox">Search both</label>
             </div>
@@ -215,6 +216,16 @@ export default {
             this.oldLinks = this.$store.state.oldLinks;
         }
         this.newLinks = this.$store.state.newLinks;
+
+        window.addEventListener('keydown', (e) => {
+            if (e.keyCode == 13) {
+                let focus = this.$el.querySelector(':focus');
+                if (focus) {
+                    focus.blur()
+                }
+                this.addRedirect()
+            }
+        })
     },
     methods: {
         checkNewLinksLength() {
@@ -365,7 +376,7 @@ export default {
             const toRedirect = this.selectedNew;
             const fromRedirect = this.selectedOld;
 
-            if (!toRedirect || !fromRedirect || fromRedirect.length < 1) {
+            if (!toRedirect || !fromRedirect || fromRedirect.length <= 0) {
                 this.stageError = 'You must select links to add to the Pairs section before adding them.'
                 return false;
             }

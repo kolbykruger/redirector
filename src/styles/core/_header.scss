@@ -1,5 +1,34 @@
 header {
-    padding: 2em;
+    grid-area: header;
+    padding: 1em;
     background: $color-p1;
     color: #fff;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        a {
+            color: #fff;
+            font-weight: 800;
+            text-decoration: none;
+
+            span.icon {
+                display: inline-block;
+                transform: rotateZ(-45deg);
+                transition: 150ms ease-in-out;
+            }
+
+            &:hover,
+            &:focus {
+
+                span.icon {
+                    transform: rotateZ(0);
+                }
+            }
+        }
+    }
 }
