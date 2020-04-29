@@ -13,9 +13,8 @@
 
                     <div class="link-search">
                         <input type="text" name="search-old" value=""
-                            placeholder="Search..."
+                            placeholder="Search... (, to focus)"
                             v-on:keyup="searchHandler"
-                            v-on:blur="searchBlur"
                             v-model="searchOldVal"
                             :class="{'no-results': searchOldFalse}">
                     </div>
@@ -23,7 +22,7 @@
                     <div class="link-list">
                         <div v-if="searchOld.length < 1">
                             <div class="links links-old" v-for="(link, index) in oldLinks" :key="index">
-                                <Links :links="link" @childToParent="moveOldToCenter"></Links>
+                                <Links :links="link" @childToParent="moveOldToCenter" @linkData="openLink"></Links>
                             </div>
                         </div>
 
@@ -82,9 +81,8 @@
 
                     <div class="link-search">
                         <input type="text" name="search-new" value=""
-                            placeholder="Search..."
+                            placeholder="Search... (. to focus)"
                             v-on:keyup="searchHandler"
-                            v-on:blur="searchBlur"
                             v-model="searchNewVal"
                             :class="{'no-results': searchNewFalse}">
                     </div>
@@ -163,10 +161,13 @@
 
     <section class="stage-settings">
         <div class="container">
-            <p><strong>Settings</strong></p>
             <div class="setting">
                 <input type="checkbox" id="checkbox" v-model="linkSearchFields">
                 <label for="checkbox">Search both</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="checkbox" v-model="lockScroll" @change="scrollLock">
+                <label for="checkbox">Scroll lock</label>
             </div>
         </div>
     </section>
@@ -201,6 +202,7 @@ export default {
             searchNewVal: '',
             searchNewFalse: false,
             linkSearchFields: false,
+            lockScroll: false,
             redirectList: [],
             stageError: '',
             stageInfo: 'Click on a link to add it to the center for pairing. You can select multiple old links, but only one new link.'
@@ -216,14 +218,56 @@ export default {
             this.oldLinks = this.$store.state.oldLinks;
         }
         this.newLinks = this.$store.state.newLinks;
-
+    },
+    mounted() {
         window.addEventListener('keydown', (e) => {
+            let focus = this.$el.querySelector(':focus');
+
+            //enter
             if (e.keyCode == 13) {
-                let focus = this.$el.querySelector(':focus');
+
                 if (focus) {
+                    if (focus.tagName == 'INPUT') {
+                        return false
+                    }
                     focus.blur()
                 }
                 this.addRedirect()
+            }
+
+            //escape
+            if (e.keyCode == 27) {
+                if (focus) {
+                    if (focus.tagName == 'INPUT') {
+                        focus.blur()
+                    }
+                }
+            }
+
+            //comma / period
+            if (e.keyCode == 188 || e.keyCode == 190) {
+
+                let inputs = this.$el.querySelectorAll('input[type="text"]');
+
+                if (focus) {
+                    if (!focus.tagName == 'INPUT') {
+                        e.preventDefault()
+                        if (e.keyCode == 188) {
+                            inputs[0].focus()
+                        }
+                        if (e.keyCode == 190) {
+                            inputs[1].focus()
+                        }
+                    }
+                } else {
+                    e.preventDefault();
+                    if (e.keyCode == 188) {
+                        inputs[0].focus()
+                    }
+                    if (e.keyCode == 190) {
+                        inputs[1].focus()
+                    }
+                }
             }
         })
     },
@@ -242,23 +286,12 @@ export default {
             this.selectedOld.push(value)
             if (this.oldLinks.includes(value)) {
                 this.oldLinks = this.oldLinks.filter((item) => item.url !== value.url)
-
-                //reset search
-                this.searchOld = [];
-                this.searchOldVal = '';
-                this.searchOldFalse = false;
             }
         },
         moveNewToCenter(value) {
             this.stageInfo = '';
             this.stageError = '';
             this.selectedNew = value;
-
-            //reset search
-            this.searchNew = [];
-            this.searchNewVal = '';
-            this.searchNewFalse = false;
-
         },
         removeOldFromCenter(value) {
             if (this.selectedOld.includes(value)) {
@@ -359,15 +392,21 @@ export default {
                 }
             }
         },
-        searchBlur() {
-            setTimeout(() => {
-                this.searchNew = [];
-                this.searchNewVal = '';
-                this.searchNewFalse = false;
-                this.searchOld = [];
-                this.searchOldVal = '';
-                this.searchOldFalse = false;
-            }, 100);
+        openLink(link) {
+                console.log(link.url)
+                let win = window.open(link.url, '_blank');
+                win.focus();
+        },
+        scrollLock() {
+            let parent = this.$el;
+
+            if (this.lockScroll) {
+                document.body.style.overflow = 'hidden'
+                parent.style.height = parent.scrollHeight+'px';
+            } else {
+                document.body.style.overflow = 'auto'
+                parent.style.height = null;
+            }
         },
         sortArray(arr) {
             return arr.sort((a, b) => (a.pathname.split('/')[1] > b.pathname.split('/')[1]) ? 1 : -1)
@@ -375,6 +414,14 @@ export default {
         addRedirect() {
             const toRedirect = this.selectedNew;
             const fromRedirect = this.selectedOld;
+
+            //clear search values
+            this.searchOld = [];
+            this.searchNew = [];
+            this.searchOldVal = '';
+            this.searchNewVal = '';
+            this.searchOldFalse = false;
+            this.searchNewFalse = false;
 
             if (!toRedirect || !fromRedirect || fromRedirect.length <= 0) {
                 this.stageError = 'You must select links to add to the Pairs section before adding them.'
