@@ -45,8 +45,6 @@
         </div>
     </section>
 
-    <hr>
-
     <section class="stage-navigation buttons">
         <div class="container">
             <div class="group group-center buttons">
