@@ -43,3 +43,13 @@ footer {
         }
     }
 }
+
+pre {
+    background: $color-p3;
+    padding: 2em;
+    border-radius: 0.25em;
+
+    code {
+        line-height: 1.25;
+    }
+}

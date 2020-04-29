@@ -12,6 +12,10 @@ textarea {
     margin: 0 auto;
     resize: vertical;
 
+    &[type="file"] {
+        position: relative;
+    }
+
     &.no-results {
         border-color: #C53030;
         background: #FED7D7;

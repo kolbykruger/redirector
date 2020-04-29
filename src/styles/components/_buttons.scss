@@ -46,6 +46,12 @@ input[type="submit"] {
         background: $color-p1;
         color: #fff;
     }
+
+    &.button-green {
+        border-color: $color-s0;
+        background: $color-s0;
+        color: #fff;
+    }
 }
 
 .buttons {

@@ -57,19 +57,18 @@
                         </div>
 
                         <div class="drop-actions buttons buttons-center">
-                            <button class="button" type="button" name="button" disabled>Create</button>
-                            <button class="button button-active" type="button" name="button" @click="addRedirect">+ Add</button>
+                            <button class="button button-green" type="button" name="button" @click="addRedirect">Create redirect</button>
                         </div>
 
                     </div>
 
                     <br>
 
-                    <p class="stage-info" v-if="stageInfo">
+                    <p class="stage-info stage-info-small" v-if="stageInfo">
                         {{ stageInfo }}
                     </p>
 
-                    <p class="stage-error" v-if="stageError">
+                    <p class="stage-error stage-error-small" v-if="stageError">
                         {{ stageError}}
                     </p>
 
@@ -215,6 +214,8 @@ export default {
         },
         moveOldToCenter(value) {
             this.stageInfo = '';
+            this.stageError = '';
+
             this.selectedOld.push(value)
             if (this.oldLinks.includes(value)) {
                 this.oldLinks = this.oldLinks.filter((item) => item.url !== value.url)
@@ -227,6 +228,7 @@ export default {
         },
         moveNewToCenter(value) {
             this.stageInfo = '';
+            this.stageError = '';
             this.selectedNew = value;
 
             //reset search

@@ -1,9 +1,9 @@
 <template>
   <div>
 
-    <PageHeading title="Your Redirects" summary="Let us know how you would like your redirects formatted"></PageHeading>
+    <PageHeading title="Your Redirects" summary="Here they are at last!"></PageHeading>
 
-    <section class="stage-options">
+    <!-- <section class="stage-options">
         <div class="container">
             <p>Provide output options</p>
 
@@ -15,15 +15,15 @@
             {{ redirectType }}
         </div>
 
-    </section>
+    </section> -->
 
     <section class="redirect-output">
         <div class="container">
-            <pre>
-                <code>
-                    {{ redirects }}
-                </code>
-            </pre>
+            <pre><code v-for="(link, index) in redirects" :key="index">{{ createRedirect(link) }}</code></pre>
+            <br>
+            <div class="buttons buttons-center">
+                <button class="button" type="button" name="button" @click="copyRedirects">Copy</button>
+            </div>
         </div>
     </section>
 
@@ -44,16 +44,38 @@ import PageHeading from '@/components/PageHeading.vue';
 export default {
     name: 'Stage-5',
     components: {
-        PageHeading
+        PageHeading,
     },
     data() {
         return {
             redirects: [],
-            redirectType: 302
+            finalForm: '',
         }
     },
     created() {
         this.redirects = this.$store.state.redirects
+    },
+    methods: {
+        createRedirect(link) {
+
+            let output = '';
+            let newUrl = new URL(this.$store.state.newUrl);
+
+            if (link.fromRedirect.length > 1) {
+                link.fromRedirect.forEach((item) => {
+                    output += `RewriteRule ^${item.pathname}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} [R=301,L] \n`}
+                );
+            } else {
+                output += `RewriteRule ^${link.fromRedirect[0].pathname}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} [R=301,L] \n`
+            }
+            this.finalForm = output;
+            return output;
+        },
+        copyRedirects() {
+            console.log('test')
+            let opt = document.querySelector('.redirect-output');
+            console.log(opt)
+        }
     }
 }
 </script>
