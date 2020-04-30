@@ -1,0 +1,121 @@
+.stage-indicator {
+    margin: 3em auto 0;
+    user-select: none;
+
+    .container {
+
+    }
+
+    .group {
+        justify-content: center;
+
+        > div:first-of-type > .indicator {
+            &::before {
+                display: none;
+            }
+        }
+        > div:last-of-type > .indicator {
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    .indicator {
+        position: relative;
+        flex: 1;
+        margin: 0 1em;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 1em;
+            height: 2px;
+            background: $color-p3;
+        }
+
+        &::before {
+            left: -1em;
+        }
+
+        &::after {
+            right: -1em;
+        }
+
+        .circle {
+            width: 2em;
+            height: 2em;
+            background: #fff;
+            border: 2px solid $color-p3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon {
+            color: $color-p3;
+        }
+
+        .indicator-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0.5em);
+            width: max-content;
+            font-weight: 600;
+            z-index: -1;
+            transition: 150ms ease-in-out;
+            opacity: 0;
+            color: $color-p2;
+            user-select: none;
+            cursor: pointer;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: -0.75em;
+                left: calc(50% - 1px);
+                width: 2px;
+                height: 0.5em;
+                background: $color-p2;
+                opacity: 0.75;
+            }
+        }
+
+        &:hover,
+        &:focus {
+            .indicator-tooltip {
+                transform: translate(-50%, 0.75em);
+                opacity: 1;
+                z-index: 1;
+            }
+        }
+
+        &-true {
+
+            .circle {
+                border-color: $color-s0;
+                background: $color-s1
+            }
+
+            .icon {
+                color: $color-s0;
+            }
+
+            &::after,
+            & + div div::before {
+                background: $color-s0;
+            }
+
+            & + div:not(.indicator-true) div .circle,
+            & + div:not(.indicator-true) div .icon {
+                border-color: $color-p2;
+                color: $color-p2;
+                background: $color-p3;
+            }
+        }
+    }
+}
