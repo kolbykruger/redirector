@@ -35,16 +35,20 @@
         </div>
     </section>
 
+    <StageIndicator></StageIndicator>
+
   </div>
 </template>
 
 <script>
 import PageHeading from '@/components/PageHeading.vue';
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageOne',
     components: {
-        PageHeading
+        PageHeading,
+        StageIndicator,
     },
     data() {
         return {
@@ -58,7 +62,7 @@ export default {
         }
     },
     created() {
-
+        
     },
     methods: {
         toggleTextarea() {
@@ -148,6 +152,7 @@ export default {
         pushState(arr) {
             if (arr) {
                 this.$store.state.oldLinks = arr;
+                this.$store.state.stage1 = true;
                 this.$router.push({ path: '/stage-2' })
             } else {
                 this.stageError = 'There was an issue processing the data you specified. We are sorry for the inconvenience.'

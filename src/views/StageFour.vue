@@ -159,6 +159,8 @@
         </div>
     </section>
 
+    <StageIndicator></StageIndicator>
+
     <section class="stage-settings">
         <div class="container">
             <div class="setting">
@@ -180,6 +182,7 @@ import Links from '@/components/Links';
 import LinksAlternate from '@/components/LinksAlternate';
 import RedirectListing from '@/components/RedirectListing';
 import PageHeading from '@/components/PageHeading.vue';
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageFour',
@@ -187,7 +190,8 @@ export default {
         Links,
         LinksAlternate,
         PageHeading,
-        RedirectListing
+        RedirectListing,
+        StageIndicator,
     },
     data() {
         return {
@@ -245,27 +249,29 @@ export default {
             }
 
             //comma / period
-            if (e.keyCode == 188 || e.keyCode == 190) {
+            if (this.$store.state.stage3) {
+                if (e.keyCode == 188 || e.keyCode == 190) {
 
-                let inputs = this.$el.querySelectorAll('input[type="text"]');
+                    let inputs = this.$el.querySelectorAll('input[type="text"]');
 
-                if (focus) {
-                    if (!focus.tagName == 'INPUT') {
-                        e.preventDefault()
+                    if (focus) {
+                        if (!focus.tagName == 'INPUT') {
+                            e.preventDefault()
+                            if (e.keyCode == 188) {
+                                inputs[0].focus()
+                            }
+                            if (e.keyCode == 190) {
+                                inputs[1].focus()
+                            }
+                        }
+                    } else {
+                        e.preventDefault();
                         if (e.keyCode == 188) {
                             inputs[0].focus()
                         }
                         if (e.keyCode == 190) {
                             inputs[1].focus()
                         }
-                    }
-                } else {
-                    e.preventDefault();
-                    if (e.keyCode == 188) {
-                        inputs[0].focus()
-                    }
-                    if (e.keyCode == 190) {
-                        inputs[1].focus()
                     }
                 }
             }
@@ -446,6 +452,7 @@ export default {
         finalStage() {
 
             this.$store.state.redirects = this.redirectList;
+            this.$store.state.stage4 = true;
             this.$router.push({ path: '/stage-5' })
 
         }

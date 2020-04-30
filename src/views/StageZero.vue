@@ -45,11 +45,14 @@
           </div>
       </section>
 
+      <StageIndicator></StageIndicator>
+
   </div>
 </template>
 
 <script>
 import PageHeading from '@/components/PageHeading.vue'
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageZero',
@@ -62,7 +65,16 @@ export default {
         }
     },
     components: {
-        PageHeading
+        PageHeading,
+        StageIndicator,
+    },
+    created() {
+        this.$store.state.stage0 = false;
+        this.$store.state.stage1 = false;
+        this.$store.state.stage2 = false;
+        this.$store.state.stage3 = false;
+        this.$store.state.stage4 = false;
+        this.$store.state.stage5 = false;
     },
     methods: {
         checkUrls() {
@@ -86,6 +98,7 @@ export default {
             this.$store.state.devUrl = this.devUrl;
             this.$store.state.oldUrl = this.oldUrl;
 
+            this.$store.state.stage0 = true;
             this.$router.push({ path: '/stage-1' });
         },
         validateURL(url) {

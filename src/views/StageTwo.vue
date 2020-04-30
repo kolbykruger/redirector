@@ -35,16 +35,20 @@
         </div>
     </section>
 
+    <StageIndicator></StageIndicator>
+
   </div>
 </template>
 
 <script>
 import PageHeading from '@/components/PageHeading.vue';
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageTwo',
     components: {
-        PageHeading
+        PageHeading,
+        StageIndicator,
     },
     data() {
         return {
@@ -148,6 +152,7 @@ export default {
         pushState(arr) {
             if (arr) {
                 this.$store.state.newLinks = arr;
+                this.$store.state.stage2 = true;
                 this.$router.push({ path: '/stage-3' })
             } else {
                 this.stageError = 'There was an issue processing the data you specified. We are sorry for the inconvenience.'

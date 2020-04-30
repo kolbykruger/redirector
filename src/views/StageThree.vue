@@ -39,7 +39,7 @@
             </div>
             <br>
             <div class="buttons">
-                <router-link class="button" to="/stage-4">Next -></router-link>
+                <button class="button" type="button" name="button" @click="nextStage">Next -></button>
             </div>
 
         </div>
@@ -53,18 +53,22 @@
         </div>
     </section>
 
+    <StageIndicator></StageIndicator>
+
   </div>
 </template>
 
 <script>
 import MatchLinks from '@/components/MatchLinks.vue';
 import PageHeading from '@/components/PageHeading.vue';
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageThree',
     components: {
         MatchLinks,
-        PageHeading
+        PageHeading,
+        StageIndicator,
     },
     data() {
         return {
@@ -109,6 +113,11 @@ export default {
 
         },
         skipStage() {
+            this.$store.state.stage3 = true;
+            this.$router.push({ path: '/stage-4' });
+        },
+        nextStage() {
+            this.$store.state.stage3 = true;
             this.$router.push({ path: '/stage-4' });
         }
     }

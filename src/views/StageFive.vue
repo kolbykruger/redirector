@@ -52,16 +52,20 @@
         </div>
     </section>
 
+    <StageIndicator></StageIndicator>
+
   </div>
 </template>
 
 <script>
 import PageHeading from '@/components/PageHeading.vue';
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageFive',
     components: {
         PageHeading,
+        StageIndicator,
     },
     data() {
         return {
@@ -71,6 +75,7 @@ export default {
         }
     },
     created() {
+        this.$store.state.stage5 = true;
         this.redirects = this.$store.state.redirects
     },
     methods: {
