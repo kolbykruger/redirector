@@ -26,11 +26,6 @@
         border-radius: 0.25em;
         padding: 1em;
         overflow: visible;
-
-        > .link {
-            width: 100%;
-            transition: 0s;
-        }
     }
 
     .matching-link-block {
@@ -79,6 +74,16 @@
         background: $color-s1;
 
         .link {
+            opacity: 0;
+            transform: translate(0, -1em);
+            animation: fade-link-in forwards 250ms ease;
+
+            @keyframes fade-link-in {
+                100% {
+                    opacity: 1;
+                    transform: translate(0, 0)
+                }
+            }
 
             &:hover,
             &:focus {
@@ -91,10 +96,20 @@
         position: relative;
         position: relative;
         background: $color-p3;
-        padding: 0.5em;
         border-radius: 0.25em;
+        padding: 0.5em;
 
         .link {
+            opacity: 0;
+            transform: translate(0, -1em);
+            animation: fade-link-in forwards 250ms ease;
+
+            @keyframes fade-link-in {
+                100% {
+                    opacity: 1;
+                    transform: translate(0, 0)
+                }
+            }
 
             &:hover,
             &:focus {
