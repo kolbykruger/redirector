@@ -14,36 +14,37 @@
         </div>
     </section>
 
-    <section v-if="matchesRun">
-        <div class="container">
-
-            <div v-if="matches.length > 0">
-                <h2>We found <strong>{{ matches.length }}</strong> {{ matches.length > 1 ? 'matches' : 'match' }}!</h2>
-                <br>
-                <p>Here {{ matches.length > 1 ? 'is a list of the ones' : ' is the one' }} we found:</p>
-                <div class="stage-matches" v-if="matches.length >= 1">
-                    <div v-for="link in matches" :key="link.index">
-                        <MatchLinks :links="link"></MatchLinks>
+    <transition name="fade">
+        <section v-if="matchesRun">
+            <div class="container">
+                <div v-if="matches.length > 0">
+                    <h2>We found <strong>{{ matches.length }}</strong> {{ matches.length > 1 ? 'matches' : 'match' }}!</h2>
+                    <br>
+                    <p>Here {{ matches.length > 1 ? 'is a list of the ones' : ' is the one' }} we found:</p>
+                    <div class="stage-matches" v-if="matches.length >= 1">
+                        <div v-for="link in matches" :key="link.index">
+                            <MatchLinks :links="link"></MatchLinks>
+                        </div>
                     </div>
+                    <br>
+                    <br>
+                    <p>We'll remove them from the list so you don't have to!</p>
+                    <p class="stage-info" v-if="remaining.length > 0">
+                        <strong>{{ remaining.length }} left...</strong><br /> We could not find a match for {{ remaining.length > 1 ? 'these links' : 'this link' }}, unfortunately.
+                    </p>
+                </div>
+
+                <div v-if="matches.length <= 0">
+                    <h3>Unfortunately, no exact matches were found.</h3>
                 </div>
                 <br>
-                <br>
-                <p>We'll remove them from the list so you don't have to!</p>
-                <p class="stage-info" v-if="remaining.length > 0">
-                    <strong>{{ remaining.length }} left...</strong><br /> We could not find a match for {{ remaining.length > 1 ? 'these links' : 'this link' }}, unfortunately.
-                </p>
-            </div>
+                <div class="buttons">
+                    <button class="button" type="button" name="button" @click="nextStage">Next -></button>
+                </div>
 
-            <div v-else>
-                <h3>Unfortunately, no exact matches were found.</h3>
             </div>
-            <br>
-            <div class="buttons">
-                <button class="button" type="button" name="button" @click="nextStage">Next -></button>
-            </div>
-
-        </div>
-    </section>
+        </section>
+    </transition>
 
     <section class="stage-navigation buttons">
         <div class="container">
@@ -125,4 +126,14 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.fade-enter-active, .fade-leave-active {
+    transition-duration: 0.5s;
+    transition-property: height, opacity, transform;
+    transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+    overflow: hidden;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translate(-2em, 0);
+}
 </style>
