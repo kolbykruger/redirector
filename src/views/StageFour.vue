@@ -13,7 +13,7 @@
 
                     <div class="link-search">
                         <input type="text" name="search-old" value=""
-                            placeholder="Search... (, to focus)"
+                            placeholder="Search..."
                             v-on:keyup="searchHandler"
                             v-model="searchOldVal"
                             :class="{'no-results': searchOldFalse}">
@@ -81,7 +81,7 @@
 
                     <div class="link-search">
                         <input type="text" name="search-new" value=""
-                            placeholder="Search... (. to focus)"
+                            placeholder="Search..."
                             v-on:keyup="searchHandler"
                             v-model="searchNewVal"
                             :class="{'no-results': searchNewFalse}">
@@ -168,17 +168,17 @@
                 <label for="checkbox">Search both</label>
             </div>
             <div class="setting">
-                <input type="checkbox" id="checkbox" v-model="lockScroll">
+                <input type="checkbox" id="checkbox" v-model="lockScroll" @change="scrollLock">
                 <label for="checkbox">Scroll lock</label>
             </div>
         </div>
     </section>
 
-    <secton class="stage-warning" v-if="lockScroll">
+    <section class="stage-warning" v-if="lockScroll">
         <button class="button" name="scrollLockButton" @click="lockScrollWarning">
             scroll lock is on
         </button>
-    </secton>
+    </section>
 
   </div>
 </template>
@@ -400,6 +400,8 @@ export default {
             }
         },
         lockScrollWarning() {
+            let parent = this.$el;
+
             this.lockScroll = false;
             document.body.style.overflow = 'auto'
             parent.style.height = null;
