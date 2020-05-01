@@ -1,0 +1,46 @@
+.partial-match-link {
+    background: #fff;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 5fr auto;
+    border-bottom: 2px solid $color-p4;
+
+    .compare {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        > * {
+            padding: 1em;
+            margin: 0;
+
+            &:last-of-type {
+                border-left: 2px solid $color-p4;
+            }
+        }
+    }
+
+    .tray {
+        background: $color-p4;
+        padding: 0.5em 1em;
+        justify-content: flex-end;
+    }
+
+    &-confirmed {
+        background: $color-s1;
+        border-color: $color-s1;
+
+        .compare {
+
+            > * {
+
+                &:last-of-type {
+                    border-color: $color-s1;
+                }
+            }
+        }
+
+        .tray {
+            background: $color-s1;
+        }
+    }
+}

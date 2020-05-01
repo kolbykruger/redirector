@@ -47,6 +47,11 @@ Vue.use(VueRouter)
   path: '/stage-5',
   name: 'StageFive',
   component: () => import('../views/StageFive.vue')
+},
+{
+  path: '/mr',
+  name: 'MatchingRevision',
+  component: () => import('../views/MatchingRevision.vue')
 }
 ]
 
