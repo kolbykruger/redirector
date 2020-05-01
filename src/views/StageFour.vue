@@ -168,11 +168,17 @@
                 <label for="checkbox">Search both</label>
             </div>
             <div class="setting">
-                <input type="checkbox" id="checkbox" v-model="lockScroll" @change="scrollLock">
+                <input type="checkbox" id="checkbox" v-model="lockScroll">
                 <label for="checkbox">Scroll lock</label>
             </div>
         </div>
     </section>
+
+    <secton class="stage-warning" v-if="lockScroll">
+        <button class="button" name="scrollLockButton" @click="lockScrollWarning">
+            scroll lock is on
+        </button>
+    </secton>
 
   </div>
 </template>
@@ -248,33 +254,6 @@ export default {
                 }
             }
 
-            //comma / period
-            if (this.$store.state.stage3) {
-                if (e.keyCode == 188 || e.keyCode == 190) {
-
-                    let inputs = this.$el.querySelectorAll('input[type="text"]');
-
-                    if (focus) {
-                        if (!focus.tagName == 'INPUT') {
-                            e.preventDefault()
-                            if (e.keyCode == 188) {
-                                inputs[0].focus()
-                            }
-                            if (e.keyCode == 190) {
-                                inputs[1].focus()
-                            }
-                        }
-                    } else {
-                        e.preventDefault();
-                        if (e.keyCode == 188) {
-                            inputs[0].focus()
-                        }
-                        if (e.keyCode == 190) {
-                            inputs[1].focus()
-                        }
-                    }
-                }
-            }
         })
     },
     methods: {
@@ -293,7 +272,7 @@ export default {
             if (this.oldLinks.includes(value)) {
                 this.oldLinks = this.oldLinks.filter((item) => item.url !== value.url)
             }
-            if (this.searchOld.length > 1) {
+            if (this.searchOld.length >= 1) {
                 if (this.searchOld.includes(value)) {
                     this.searchOld = this.searchOld.filter((item) => item.url !== value.url)
                 }
@@ -420,20 +399,17 @@ export default {
                 parent.style.height = null;
             }
         },
+        lockScrollWarning() {
+            this.lockScroll = false;
+            document.body.style.overflow = 'auto'
+            parent.style.height = null;
+        },
         sortArray(arr) {
             return arr.sort((a, b) => (a.pathname.split('/')[1] > b.pathname.split('/')[1]) ? 1 : -1)
         },
         addRedirect() {
             const toRedirect = this.selectedNew;
             const fromRedirect = this.selectedOld;
-
-            //clear search values
-            this.searchOld = [];
-            this.searchNew = [];
-            this.searchOldVal = '';
-            this.searchNewVal = '';
-            this.searchOldFalse = false;
-            this.searchNewFalse = false;
 
             if (!toRedirect || !fromRedirect || fromRedirect.length <= 0) {
                 this.stageError = 'You must select links to add to the Pairs section before adding them.'
@@ -449,6 +425,29 @@ export default {
             }
 
             this.redirectList.push(redirectObj);
+
+            if (this.linkSearchFields || this.searchOldVal || this.searchNewVal) {
+                let inputs = this.$el.querySelectorAll('input[type="text"]');
+
+                if (this.searchOldVal && !this.linkSearchFields) {
+                    inputs[0].focus()
+                }
+                if (this.searchNewVal && !this.linkSearchFields) {
+                    inputs[1].focus()
+                }
+                if (this.linkSearchFields) {
+                    inputs[0].focus()
+                }
+            }
+
+            //clear search values
+            this.searchOld = [];
+            this.searchNew = [];
+            this.searchOldVal = '';
+            this.searchNewVal = '';
+            this.searchOldFalse = false;
+            this.searchNewFalse = false;
+
         },
         finalStage() {
 
