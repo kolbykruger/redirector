@@ -14,7 +14,7 @@
         </div>
     </header>
     <main>
-        <transition name="fade">
+        <transition name="slide" mode="out-in">
             <router-view/>
         </transition>
     </main>
@@ -27,12 +27,18 @@
 </template>
 
 <style lang="css" scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 1s;
+.slide-enter-active,
+.slide-leave-active {
+  transition-duration: 0.5s;
+  transition-property: height, opacity, transform;
+  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  overflow: hidden;
 }
-.fade-enter,
-.fade-leave {
-    opacity: 0;
+
+.slide-leave-active,
+.slide-enter {
+  opacity: 0;
+  transform: translate(-2em, 0);
 }
+
 </style>
