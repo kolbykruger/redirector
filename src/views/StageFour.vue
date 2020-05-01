@@ -20,12 +20,12 @@
                     </div>
 
                     <div class="link-list">
+
                         <div v-if="searchOld.length < 1">
                             <div class="links links-old" v-for="(link, index) in oldLinks" :key="index">
                                 <Links :links="link" @childToParent="moveOldToCenter" @linkData="openLink"></Links>
                             </div>
                         </div>
-
                         <div v-else>
                             <div class="links links-old" v-for="(link, index) in searchOld" :key="index">
                                 <Links :links="link" @childToParent="moveOldToCenter"></Links>
@@ -328,6 +328,7 @@ export default {
             }
 
             let filtered = this.searchFilter(this.oldLinks, value);
+
             if (filtered.length < 1) {
                 this.searchOld = filtered;
                 this.searchOldFalse = true;
@@ -359,7 +360,7 @@ export default {
             }
         },
         searchFilter(arr, value) {
-            return arr.filter((item) => item.url.includes(value));
+            return arr.filter((item) => item.pathname.includes(value));
         },
         linkedSearch(e) {
             let value = e.target.value;
@@ -461,5 +462,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.fade-enter-active, .fade-leave-active {
+    transition-duration: 0.5s;
+    transition-property: height, opacity, transform;
+    transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+    overflow: hidden;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translate(-2em, 0);
+}
 </style>
