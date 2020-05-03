@@ -1,5 +1,4 @@
 .redirect-listing {
-    position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     background: #fff;
@@ -14,36 +13,16 @@
         padding: 1em;
     }
 
-    .redirect-arrow {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 1.25em;
-        height: 1.25em;
-        transform: translate(-50%, 1.125em);
-        background: $color-p2;
-        color: #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        p {
-            font-size: 0.7rem;
-        }
-    }
-
     p {
-        font-size: 1rem;
         margin: 0;
-        font-weight: 600;
     }
 }
 
 .redirects-list {
-    margin-top: 1em;
+    margin-top: 3em;
 
-    h2 {
-        text-align: center;
+    .container {
+        margin-top: 3em;
     }
+
 }

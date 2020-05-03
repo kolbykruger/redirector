@@ -58,6 +58,10 @@ pre {
     }
 }
 
+hr {
+    border: 2px solid $color-p3;
+}
+
 #app {
     min-height: 100vh;
     display: grid;
