@@ -2,16 +2,12 @@
     <div class="redirect-listing">
         <div class="redirect-from-group">
             <p v-for="(item, index) in redirect.fromRedirect" :key="index">
-                {{ item.url }}
+                {{ item.pathname }}
             </p>
         </div>
-        <div class="redirect-arrow">
-            <p>-></p>
-        </div>
         <div class="redirect-to">
-            <p>{{ redirect.toRedirect.url }}</p>
+            <p>{{ redirect.toRedirect.pathname }}</p>
         </div>
-        <!-- <button title="Remove" type="button" name="button">X</button> -->
     </div>
 </template>
 
