@@ -107,47 +107,34 @@
 
             </div>
 
-            <br>
-
-            <div class="redirects-list" v-if="redirectList.length >= 1">
-
-                <h2>Final redirects</h2>
-
-                <div class="redirect-listing redirect-listing-header">
-
-                    <div class="redirect-from-group">
-                        <p><strong>From</strong></p>
-                    </div>
-
-                    <div class="redirect-to">
-                        <p><strong>To</strong></p>
-                    </div>
-
-                </div>
-
-                <div class="links links-new" v-for="(redirect, index) in redirectList" :key="index">
-                    <RedirectListing :redirect="redirect"/>
-                </div>
-
-            </div>
-
         </div>
     </section>
 
-    <section class="" v-else>
+    <hr>
 
+    <section class="step step-5 stage-stats">
         <div class="container">
+            <h2>Summary</h2>
 
-            <h2>Old Links</h2>
-
-            <p>This appears when you don't specify new links. Go do that.</p>
-
-            <div class="links links-old" v-for="(link, index) in oldLinks" :key="index">
-                <LinksAlternate :links="link"></LinksAlternate>
+            <div class="group">
+                <div class="stat-item">
+                    <p class="value">{{ redirectList.length }}</p>
+                    <p class="label">Manual redirect(s)</p>
+                </div>
+                <div class="stat-item">
+                    <p class="value">{{ this.$store.state.partialRedirects.length }}</p>
+                    <p class="label">Partial redirect(s)</p>
+                </div>
+                <div class="stat-item">
+                    <p class="value">{{ redirectList.length + this.$store.state.partialRedirects.length }}</p>
+                    <p class="label">Total redirect(s)</p>
+                </div>
+                <div class="stat-item">
+                    <p class="value">{{ oldLinks.length }}</p>
+                    <p class="label">Link(s) left</p>
+                </div>
             </div>
-
         </div>
-
     </section>
 
     <section class="stage-navigation buttons">
@@ -185,8 +172,7 @@
 
 <script>
 import Links from '@/components/Links';
-import LinksAlternate from '@/components/LinksAlternate';
-import RedirectListing from '@/components/RedirectListing';
+//import RedirectListing from '@/components/RedirectListing';
 import PageHeading from '@/components/PageHeading.vue';
 import StageIndicator from '@/components/StageIndicator.vue'
 
@@ -194,9 +180,8 @@ export default {
     name: 'StageFour',
     components: {
         Links,
-        LinksAlternate,
         PageHeading,
-        RedirectListing,
+        //RedirectListing,
         StageIndicator,
     },
     data() {
@@ -383,9 +368,8 @@ export default {
                 }
             }
         },
-        openLink(link) {
-                console.log(link.url)
-                let win = window.open(link.url, '_blank');
+        openLink(value) {
+                let win = window.open(value.url, '_blank');
                 win.focus();
         },
         scrollLock() {
