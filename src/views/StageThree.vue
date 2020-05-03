@@ -1,95 +1,141 @@
 <template>
   <div>
 
-    <PageHeading title="Auto-matching" summary="We'll try and find exact matches to save you time."></PageHeading>
+    <PageHeading title="Automatic matching" summary="We'll try and some matches to save you time."></PageHeading>
 
-    <section class="stage-options" v-if="optionSelected">
+    <section class="step step-1" v-if="step === 1">
         <div class="container">
-            <p>Would you like us to try and find exact matches?</p>
-            <br>
-            <div class="group buttons">
-                <button class="button" type="button" name="button" @click="checkForMatches">Yes</button>
-                <router-link class="button" to="/stage-4">No</router-link>
+            <h2>Exact match</h2>
+            <p>Would you like us to try and find some <strong>exact</strong> matches?</p>
+            <div class="buttons">
+                <button class="button button-active" type="button" name="button" @click="findExactMatches">Yes</button>
+                <button class="button" type="button" name="button" @click="stepSkip">No</button>
             </div>
         </div>
     </section>
 
     <transition name="fade">
-        <section v-if="matchesRun">
-            <div class="container">
-                <div v-if="matches.length > 0">
-                    <h2>We found <strong>{{ matches.length }}</strong> {{ matches.length > 1 ? 'matches' : 'match' }}!</h2>
-                    <br>
-                    <p>Here {{ matches.length > 1 ? 'is a list of the ones' : ' is the one' }} we found:</p>
-                    <div class="stage-matches" v-if="matches.length >= 1">
-                        <div v-for="link in matches" :key="link.index">
+        <div v-if="step >= 2">
+            <section class="step step-2" v-if="step >= 2">
+                <div class="container" v-if="exactMatches.length >= 1">
+                    <h2>We found {{ exactMatches.length }} exact matches!</h2>
+                    <p>We'll automatically remove these for you, since they don't require redirects!</p>
+                    <div class="stage-matches" v-if="exactMatches.length >= 1">
+                        <div v-for="link in exactMatches" :key="link.index">
                             <MatchLinks :links="link"></MatchLinks>
                         </div>
                     </div>
-                    <br>
-                    <br>
-                    <p>We'll remove them from the list so you don't have to!</p>
-                    <p class="stage-info" v-if="remaining.length > 0">
-                        <strong>{{ remaining.length }} left...</strong><br /> We could not find a match for {{ remaining.length > 1 ? 'these links' : 'this link' }}, unfortunately.
-                    </p>
                 </div>
+                <div class="container" v-else>
+                    <h2>We didn't find any matches...</h2>
+                </div>
+            </section>
 
-                <div v-if="matches.length <= 0">
-                    <h3>Unfortunately, no exact matches were found.</h3>
-                </div>
-                <br>
-                <div class="buttons">
-                    <button class="button" type="button" name="button" @click="nextStage">Next -></button>
-                </div>
+            <hr v-if="step >= 2">
 
+            <section class="step step-3" v-if="step === 2">
+
+                <div class="container">
+                    <h2>Partial match</h2>
+                    <p>Would you like us to try and find some <strong>partial</strong> matches?</p>
+                    <div class="buttons">
+                        <button class="button button-active" type="button" name="button" @click="findPartialMatches">Yes</button>
+                        <button class="button" type="button" name="button" @click="stepSkip">No</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </transition>
+
+    <transition name="fade">
+        <section class="step step-4" v-if="step >= 3">
+            <div class="container">
+                <div v-if="partialMatches.length >= 1">
+                    <h2>We found {{ partialMatches.length }} partial matches!</h2>
+                    <p>Each redirect shown has one or more partial matches. Please select the correct match (if any) and add it.</p>
+                    <div class="stage-matches" v-if="partialMatches.length >= 1">
+                        <div v-for="link in partialMatches" :key="link.index">
+                            <PartialMatchLink :redirectData="link" @childToParent="confirmRedirect"></PartialMatchLink>
+                        </div>
+                    </div>
+                </div>
+                <div v-else>
+                    <h2>We couldn't find any partial matches...</h2>
+                </div>
             </div>
         </section>
     </transition>
 
-    <section class="stage-navigation buttons">
+    <hr v-if="step >= 3">
+
+    <section class="step step-5 stage-stats" v-if="step == 3">
         <div class="container">
-            <div class="group group-center buttons">
-                <!-- <router-link class="button button-secondary" to="/stage-2">Back</router-link> -->
+            <h2>Summary</h2>
+
+            <div class="group">
+                <div class="stat-item">
+                    <p class="value">{{ partialMatches.length }}</p>
+                    <p class="label">Partial match(es)</p>
+                </div>
+                <div class="stat-item">
+                    <p class="value">{{ createdRedirects.length }}</p>
+                    <p class="label">Redirect(s) created</p>
+                </div>
+                <div class="stat-item">
+                    <p class="value">{{ oldLinks.length }}</p>
+                    <p class="label">Link(s) left</p>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="buttons">
+                <button class="button" type="button" name="button" @click="nextStage">Next -></button>
             </div>
         </div>
     </section>
-
-    <StageIndicator></StageIndicator>
 
   </div>
 </template>
 
 <script>
-import MatchLinks from '@/components/MatchLinks.vue';
+
 import PageHeading from '@/components/PageHeading.vue';
-import StageIndicator from '@/components/StageIndicator.vue'
+import PartialMatchLink from '@/components/PartialMatchLink.vue';
+import MatchLinks from '@/components/MatchLinks.vue';
+//import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageThree',
     components: {
-        MatchLinks,
         PageHeading,
-        StageIndicator,
+        PartialMatchLink,
+        MatchLinks,
+        //StageIndicator,
     },
     data() {
         return {
             newLinks: null,
             oldLinks: null,
-            matches: [],
-            remaining: [],
-            matchesRun: false,
-            optionSelected: true,
+            exactMatches: [],
+            partialMatches: [],
+            createdRedirects: [],
+            step: 1,
         }
     },
     created() {
         this.newLinks = this.$store.state.newLinks;
         this.oldLinks = this.$store.state.oldLinks;
+
+        //reset previous data
+        this.$store.state.automatching = false;
+        this.$store.state.partialRedirects = [];
+        this.$store.state.remaining = [];
     },
     methods: {
-        checkForMatches() {
-
-            this.optionSelected = false;
-
+        findExactMatches() {
             const arr1 = this.newLinks,
                   arr2 = this.oldLinks;
 
@@ -104,28 +150,180 @@ export default {
                 });
             })
 
-            this.matches = matches;
-            this.remaining = remaining;
-            this.matchesRun = true;
+            this.exactMatches = matches;
+            this.oldLinks = remaining;
+            this.step = 2;
+        },
+        findPartialMatches() {
 
-            this.$store.state.automatching = true,
-            this.$store.state.remaining = remaining,
-            this.$store.state.matches = matches;
+            let arr1 = [];
+            this.oldLinks.forEach(function(link) {
+                let pathName = link.pathname;
+                let path = pathName.replace(/\/+$/, '');
+                let parts = path.split('/');
+                let keywords = [];
+
+                parts.forEach(function(thing) {
+                    let words = thing.split('-');
+                    words.forEach(function(word) {
+                        if (word.length > 3) {
+                            keywords.push(word)
+                        }
+                    })
+                })
+
+                let uniqueKeywords = [...new Set(keywords)];
+
+                arr1.push({
+                    keywords: uniqueKeywords,
+                    link: link
+                })
+
+            })
+
+            let arr2 = [];
+            this.newLinks.forEach(function(link) {
+                let pathName = link.pathname;
+                let path = pathName.replace(/\/+$/, '');
+                let parts = path.split('/');
+                let keywords = [];
+
+                parts.forEach(function(thing) {
+                    let words = thing.split('-');
+                    words.forEach(function(word) {
+                        if (word.length > 3) {
+                            keywords.push(word)
+                        }
+                    })
+                })
+
+                let uniqueKeywords = [...new Set(keywords)];
+
+                arr2.push({
+                    keywords: uniqueKeywords,
+                    link: link
+                })
+
+            })
+
+            let redirects = [];
+            arr1.forEach(function(o1) {
+                let matches = [];
+                let count;
+
+                arr2.forEach(function(o2) {
+
+                    count = o1.keywords.length;
+                    const intersection = o2.keywords.filter(word => {
+                        // old method - o1.keywords.includes(word)
+                        if (o1.keywords.indexOf(word) > -1) {
+                            return word
+                        }
+                    })
+
+                    if (count == 1) {
+                        if (intersection.length >= 1) {
+                            matches.push({
+                                rank: intersection.length,
+                                link: o2.link
+                            })
+                        }
+                    } else {
+                        if (intersection.length >= 2) {
+
+                            let obj = {
+                                rank: intersection.length,
+                                link: o2.link
+                            }
+
+                            matches.push(obj)
+                        }
+                    }
+                })
+
+                //form the object of the matches
+                //output the matches to the data
+                if (matches.length >= 1) {
+
+                    //sort array by highest rank
+                    matches.sort((a, b) => b.rank - a.rank)
+
+                    //reduce the array to top 3
+                    if (matches.length > 3) {
+                        let removeCount = matches.length - 3;
+                        matches.splice(2, removeCount);
+                    }
+
+                    //push data to components via
+                    let redirectObj = {
+                        new: matches,
+                        old: o1.link,
+                    }
+
+                    redirects.push(redirectObj)
+                }
+
+            })
+
+            let singleMatches = [];
+            let multiMatches = [];
+
+            //split and sort redirects based on relevence
+            redirects.forEach((item) => {
+                if (item.new.length == 1) {
+                    singleMatches.push(item)
+                }
+                else {
+                    multiMatches.push(item)
+                }
+            })
+
+            //sort arrays by ranks (show highest relevence first)
+            singleMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
+            multiMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
+
+            let joinMatches = [...singleMatches, ...multiMatches];
+
+            this.partialMatches = joinMatches;
+            this.step = 3
 
         },
-        skipStage() {
-            this.$store.state.stage3 = true;
-            this.$router.push({ path: '/stage-4' });
+        confirmRedirect(value) {
+
+            let arr2 = this.oldLinks;
+            let arr1 = [];
+                arr1.push(value.oldLink);
+
+            let remaining = arr2.filter(function(o1){
+                return !arr1.some(function(o2){
+                    return o1.pathname === o2.pathname;
+                });
+            })
+
+
+            this.oldLinks = remaining;
+
+            this.createdRedirects.push({
+                toRedirect: value.newLink,
+                fromRedirect: [value.oldLink]
+            })
+
+        },
+        stepSkip() {
+            this.step++
         },
         nextStage() {
             this.$store.state.stage3 = true;
-            this.$router.push({ path: '/stage-4' });
-        }
+            this.$store.state.automatching = true;
+            this.$store.state.partialRedirects = this.createdRedirects;
+            this.$store.state.remaining = this.oldLinks;
+            this.$router.push({ path: '/stage-4' })
+        },
     }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .fade-enter-active, .fade-leave-active {
     transition-duration: 0.5s;
     transition-property: height, opacity, transform;
