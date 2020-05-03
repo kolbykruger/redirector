@@ -47,7 +47,7 @@ Vue.use(VueRouter)
   path: '/stage-5',
   name: 'StageFive',
   component: () => import('../views/StageFive.vue')
-}
+},
 ]
 
 const router = new VueRouter({

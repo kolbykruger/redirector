@@ -3,20 +3,6 @@
 
     <PageHeading title="The redirects" summary="Below you'll find your created redirects in both Apache and Nginx formats."></PageHeading>
 
-    <!-- <section class="stage-options">
-        <div class="container">
-            <p>Provide output options</p>
-
-            <input type="radio" id="one" value="301" v-model="redirectType">
-            <label for="one">301 Redirect</label>
-            <br>
-            <input type="radio" id="two" value="302" v-model="redirectType">
-            <label for="two">302 Redirect</label>
-            {{ redirectType }}
-        </div>
-
-    </section> -->
-
     <section class="redirect-output">
         <div class="container">
             <h2>Apache redirects</h2>
@@ -42,12 +28,16 @@
                 <button class="button" type="button" name="button" @click="copyRedirects">Copy</button>
             </div>
         </div>
-    </section>
-
-    <section class="stage-navigation buttons">
         <div class="container">
-            <div class="group group-center buttons">
-                <!-- <router-link class="button button-secondary" to="/stage-4">Back</router-link> -->
+            <h2>Raw redirects</h2>
+            <p>A full list of the redirects that you can edit easily.</p>
+            <pre><code v-for="(link, index) in redirects" :key="index">{{ createRawRedirect(link) }}</code></pre>
+            <br>
+            <div class="textarea-copy">
+                <textarea name="name" rows="8" cols="80" v-model="rawFinalForm"></textarea>
+            </div>
+            <div class="buttons buttons-center">
+                <button class="button" type="button" name="button" @click="copyRedirects">Copy</button>
             </div>
         </div>
     </section>
@@ -72,11 +62,23 @@ export default {
             redirects: [],
             finalForm: '',
             nginxFinalForm: '',
+            rawFinalForm: '',
         }
     },
     created() {
         this.$store.state.stage5 = true;
-        this.redirects = this.$store.state.redirects
+
+        let stageFourRedirects = this.$store.state.redirects;
+        let stageThreeRedirects = this.$store.state.partialRedirects;
+
+        let arr = [];
+        if (stageThreeRedirects) {
+            arr = stageFourRedirects.concat(stageThreeRedirects);
+        } else {
+            arr = stageFourRedirects;
+        }
+
+        this.redirects = arr;
     },
     methods: {
         createRedirect(link) {
@@ -86,11 +88,12 @@ export default {
 
             if (link.fromRedirect.length > 1) {
                 link.fromRedirect.forEach((item) => {
-                    output += `RewriteRule ^${item.pathname.substring(1)}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} [R=301,L] \n`}
-                );
+                    output += this.formatRedirect('apache', item.pathname.substring(1), link.toRedirect.pathname, newUrl);
+                });
             } else {
-                output += `RewriteRule ^${link.fromRedirect[0].pathname.substring(1)}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} [R=301,L] \n`
+                output += this.formatRedirect('apache', link.fromRedirect[0].pathname.substring(1), link.toRedirect.pathname, newUrl)
             }
+
             this.finalForm = output;
             return output;
         },
@@ -100,14 +103,40 @@ export default {
 
             if (link.fromRedirect.length > 1) {
                 link.fromRedirect.forEach((item) => {
-                    output += `rewrite ^${item.pathname}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} permanent \n`}
-                );
+                    output += this.formatRedirect('nginx', item.pathname.substring(1), link.toRedirect.pathname, newUrl);
+                });
             } else {
-                output += `rewrite ^${link.fromRedirect[0].pathname}$ ${newUrl.protocol}//${newUrl.hostname}${link.toRedirect.pathname} permanent \n`
+                output += this.formatRedirect('nginx', link.fromRedirect[0].pathname.substring(1), link.toRedirect.pathname, newUrl)
             }
 
             this.nginxFinalForm = output;
             return output;
+        },
+        createRawRedirect(link) {
+            let output = '';
+            let newUrl = new URL(this.$store.state.newUrl);
+
+            if (link.fromRedirect.length > 1) {
+                link.fromRedirect.forEach((item) => {
+                    output += this.formatRedirect('raw', item.pathname.substring(1), link.toRedirect.pathname, newUrl);
+                });
+            } else {
+                output += this.formatRedirect('raw', link.fromRedirect[0].pathname.substring(1), link.toRedirect.pathname, newUrl)
+            }
+
+            this.rawFinalForm = output;
+            return output;
+        },
+        formatRedirect(format, oldURL, newURL, url) {
+            if (format == 'nginx') {
+                return `rewrite ^${oldURL}$ ${url.protocol}//${url.hostname}${newURL} permanent \n`;
+            }
+            if (format == 'apache') {
+                return `RewriteRule ^${oldURL}$ ${url.protocol}//${url.hostname}${newURL} [R=301,L] \n`
+            }
+            if (format == 'raw') {
+                return `[START] ${oldURL} [MIDDLE] ${url.protocol}//${url.hostname}${newURL} [END] \n`;
+            }
         },
         copyRedirects(e) {
             const el = e.target;

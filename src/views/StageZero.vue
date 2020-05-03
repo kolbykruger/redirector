@@ -69,12 +69,23 @@ export default {
         StageIndicator,
     },
     created() {
-        this.$store.state.stage0 = false;
-        this.$store.state.stage1 = false;
-        this.$store.state.stage2 = false;
-        this.$store.state.stage3 = false;
-        this.$store.state.stage4 = false;
+
+        this.$store.state.newUrl = '',
+        this.$store.state.devUrl = '',
+        this.$store.state.oldUrl = '',
+        this.$store.state.oldLinks = [],
+        this.$store.state.newLinks = [],
+        this.$store.state.automatching = false,
+        this.$store.state.remaining = [],
+        this.$store.state.partialRedirects = [],
+        this.$store.state.redirects = [],
+        this.$store.state.stage0 = false,
+        this.$store.state.stage1 = false,
+        this.$store.state.stage2 = false,
+        this.$store.state.stage3 = false,
+        this.$store.state.stage4 = false,
         this.$store.state.stage5 = false;
+
     },
     methods: {
         checkUrls() {
