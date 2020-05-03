@@ -48,11 +48,6 @@ Vue.use(VueRouter)
   name: 'StageFive',
   component: () => import('../views/StageFive.vue')
 },
-{
-  path: '/mr',
-  name: 'MatchingRevision',
-  component: () => import('../views/MatchingRevision.vue')
-}
 ]
 
 const router = new VueRouter({
