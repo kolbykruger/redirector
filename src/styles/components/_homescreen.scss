@@ -1,0 +1,61 @@
+.homescreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    > div {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 8vw;
+    }
+
+    .white {
+        width: 50%;
+        height: 100%;
+        justify-content: flex-end;
+
+        .content {
+            transform: translate(50%, 0);
+            color: $color-p0;
+            text-align: center;
+
+            h1 {
+                color: $color-p0;
+            }
+        }
+    }
+
+    .black {
+        left: 50%;
+        background: $color-p0;
+        justify-content: flex-start;
+
+        .content {
+            transform: translate(-50%, 0);
+            color: #fff;
+            text-align: center;
+
+            h1 {
+                color: #fff;
+            }
+        }
+    }
+
+    .buttons {
+        margin-top: 5em;
+    }
+
+    p {
+        font-size: 1.875rem;
+    }
+}
