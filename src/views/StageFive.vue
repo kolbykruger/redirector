@@ -28,21 +28,23 @@
                 <button class="button" type="button" name="button" @click="copyRedirects">Copy</button>
             </div>
         </div>
+    </section>
+
+    <section class="stage-navigation buttons">
         <div class="container">
-            <h2>Raw redirects</h2>
-            <p>A full list of the redirects that you can edit easily.</p>
-            <pre><code v-for="(link, index) in redirects" :key="index">{{ createRawRedirect(link) }}</code></pre>
-            <br>
-            <div class="textarea-copy">
-                <textarea name="name" rows="8" cols="80" v-model="rawFinalForm"></textarea>
-            </div>
+            <h2 style="text-align: center;">Created by Kolby Kruger</h2>
             <div class="buttons buttons-center">
-                <button class="button" type="button" name="button" @click="copyRedirects">Copy</button>
+                <a class="button" href="https://kolby.dev/" target="_blank" rel="nofollow">Website</a>
+                <a class="button" href="https://github.com/kolbykruger" target="_blank" rel="nofollow">Github</a>
             </div>
         </div>
     </section>
 
     <StageIndicator></StageIndicator>
+
+    <br>
+    <br>
+    <br>
 
   </div>
 </template>
@@ -112,30 +114,12 @@ export default {
             this.nginxFinalForm = output;
             return output;
         },
-        createRawRedirect(link) {
-            let output = '';
-            let newUrl = new URL(this.$store.state.newUrl);
-
-            if (link.fromRedirect.length > 1) {
-                link.fromRedirect.forEach((item) => {
-                    output += this.formatRedirect('raw', item.pathname.substring(1), link.toRedirect.pathname, newUrl);
-                });
-            } else {
-                output += this.formatRedirect('raw', link.fromRedirect[0].pathname.substring(1), link.toRedirect.pathname, newUrl)
-            }
-
-            this.rawFinalForm = output;
-            return output;
-        },
         formatRedirect(format, oldURL, newURL, url) {
             if (format == 'nginx') {
                 return `rewrite ^${oldURL}$ ${url.protocol}//${url.hostname}${newURL} permanent \n`;
             }
             if (format == 'apache') {
                 return `RewriteRule ^${oldURL}$ ${url.protocol}//${url.hostname}${newURL} [R=301,L] \n`
-            }
-            if (format == 'raw') {
-                return `[START] ${oldURL} [MIDDLE] ${url.protocol}//${url.hostname}${newURL} [END] \n`;
             }
         },
         copyRedirects(e) {
