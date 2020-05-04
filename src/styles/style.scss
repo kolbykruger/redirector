@@ -8,13 +8,14 @@
 
 //Core
 @import './core/general';
-@import './core/header';
-@import './core/footer';
+//@import './core/header';
+//@import './core/footer';
 @import './core/nav';
 @import './core/pageheading';
 @import './core/typography';
 
 //Components
+@import './components/homescreen';
 @import './components/form-fields';
 @import './components/buttons';
 @import './components/stage-navigation';
