@@ -87,15 +87,18 @@
                     <p class="label">Link(s) left</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <br>
-            <br>
-
-            <div class="buttons">
-                <button class="button" type="button" name="button" @click="nextStage">Next -></button>
+    <section class="stage-navigation buttons">
+        <div class="container">
+            <div class="group group-center buttons">
+                <button type="button" name="button" class="button" @click="nextStage">Next -></button>
             </div>
         </div>
     </section>
+
+    <StageIndicator></StageIndicator>
 
   </div>
 </template>
@@ -105,7 +108,7 @@
 import PageHeading from '@/components/PageHeading.vue';
 import PartialMatchLink from '@/components/PartialMatchLink.vue';
 import MatchLinks from '@/components/MatchLinks.vue';
-//import StageIndicator from '@/components/StageIndicator.vue'
+import StageIndicator from '@/components/StageIndicator.vue'
 
 export default {
     name: 'StageThree',
@@ -113,7 +116,7 @@ export default {
         PageHeading,
         PartialMatchLink,
         MatchLinks,
-        //StageIndicator,
+        StageIndicator,
     },
     data() {
         return {

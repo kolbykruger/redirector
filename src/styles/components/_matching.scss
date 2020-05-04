@@ -9,7 +9,6 @@
 
     section {
         flex: 1;
-        overflow: hidden;
 
         &.matching-center {
             overflow: visible;
@@ -26,10 +25,13 @@
         border-radius: 0.25em;
         padding: 1em;
         overflow: visible;
+
+        .link-list {
+            overflow: hidden;
+        }
     }
 
     .matching-link-block {
-        overflow: hidden;
 
         .link-search {
             padding-bottom: 0.25em;
@@ -50,6 +52,9 @@
             text-align: center;
             color: $color-p2;
             opacity: 0.75;
+            border-top: 2px solid $color-p3;
+            padding: 0.5em;
+            margin-top: 0.5em;
         }
 
         .link-list::-webkit-scrollbar-track {-webkit-box-shadow:none; background-color: transparent; height:4px; width: 4px;}

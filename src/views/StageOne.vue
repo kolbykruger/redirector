@@ -8,6 +8,7 @@
             <div class="group buttons">
                 <button class="button" type="button" name="button" @click="toggleFileUpload" :class="{'button-active': showFileUpload}">Upload XML File</button>
                 <button class="button" type="button" name="button" @click="toggleTextarea" :class="{'button-active': showTextarea}">Paste RAW</button>
+                <a href="https://www.xml-sitemaps.com/" target="_blank" rel="nofollow" class="button">Generate XML File</a>
             </div>
         </div>
     </section>
@@ -62,7 +63,7 @@ export default {
         }
     },
     created() {
-        
+
     },
     methods: {
         toggleTextarea() {
