@@ -5,53 +5,6 @@
     grid-template-columns: 5fr auto;
     border-bottom: 2px solid $color-p4;
 
-    .rank {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translate(-50%, -50%);
-        background: $color-p1;
-        color: #fff;
-        width: 1.25em;
-        height: 1.5em;
-        font-family: 'Source Code Pro', monospace;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        border-radius: 0.5em;
-
-        display: none;
-
-        &[data-rank="20"],
-        &[data-rank="19"],
-        &[data-rank="18"],
-        &[data-rank="17"],
-        &[data-rank="16"],
-        &[data-rank="15"],
-        &[data-rank="14"],
-        &[data-rank="13"],
-        &[data-rank="12"],
-        &[data-rank="11"],
-        &[data-rank="10"],
-        &[data-rank="9"],
-        &[data-rank="8"],
-        &[data-rank="7"],
-        &[data-rank="6"],
-        &[data-rank="5"] {
-            background: $color-s0;
-        }
-        &[data-rank="4"],
-        &[data-rank="3"],
-        &[data-rank="2"] {
-            background: orange;
-        }
-
-        &[data-rank="1"] {
-            background: red;
-        }
-    }
-
     .compare {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -64,7 +17,7 @@
                 display: inline-flex;
                 padding: 0.65em 0.75em;
                 font-weight: 600;
-                line-height: 1;
+                line-height: 1.5;
                 width: 100%;
                 transition: 150ms ease;
             }
@@ -92,6 +45,7 @@
         .link {
             @include fluid('font-size', 1.125rem, 1.25rem);
             font-weight: 400;
+            line-height: 1.5;
 
             &-selected {
                 font-weight: 600;
@@ -99,6 +53,18 @@
 
             span {
                 font-size: inherit;
+
+                span {
+                    border-bottom: dotted 2px lighten($color-p2, 15%);
+                }
+            }
+
+            &:hover,
+            &:focus {
+                span span {
+                    border-color: $color-p2;
+
+                }
             }
         }
     }
