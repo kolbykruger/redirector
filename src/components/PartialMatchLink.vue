@@ -1,8 +1,5 @@
 <template>
   <div class="partial-match-link" v-if="!confirmed">
-      <div class="rank" :data-rank="redirectData.new[0].rank">
-          {{ redirectData.new[0].rank }}
-      </div>
       <div class="compare">
           <p class="compare-old">
               <span>{{ redirectData.old.pathname }}</span>
@@ -13,10 +10,12 @@
                       <PartialMatchOptionLink
                           :link="item.link"
                           :selected="false"
+                          :similarities="item.similarities"
                           @optionSelected="partialOptionSelected"
                           @selectLink="partialOptionAction"
                           :class="{'link-selected': isSelected(item.link)}"
-                          :data-rank="item.rank">
+                          :data-rank="item.rank"
+                          :title="item.rank + ' similar word(s) found.'">
                       </PartialMatchOptionLink>
                   </p>
               </div>
@@ -24,9 +23,11 @@
                 <PartialMatchOptionLink
                     :link="redirectData.new[0].link"
                     :selected="true"
+                    :similarities="redirectData.new[0].similarities"
                     @optionSelected="partialOptionSelected"
                     :class="{'link-selected': isSelected(redirectData.new[0].link)}"
-                    :data-rank="redirectData.new[0].rank">
+                    :data-rank="redirectData.new[0].rank"
+                    :title="redirectData.new[0].rank + ' similar word(s) found.'">
                 </PartialMatchOptionLink>
               </div>
           </div>

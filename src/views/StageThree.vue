@@ -159,53 +159,42 @@ export default {
         },
         findPartialMatches() {
 
+            function createKeywords(link) {
+                let pathName = link.pathname,
+                    path = pathName.replace(/\/+$/, ''),
+                    parts = path.split('/'),
+                    keywords = [];
+
+                    parts.forEach((part) => {
+                        let words = part.split(/[.*+-/_]/);
+                        words.forEach((word) => {
+                            if (word.length > 3) {
+                                keywords.push(word)
+                            }
+                        })
+                    })
+
+                    const uniqueKeywords = [...new Set(keywords)];
+
+                    return {
+                        keywords: uniqueKeywords,
+                        link: link
+                    }
+            }
+
             let arr1 = [];
             this.oldLinks.forEach(function(link) {
-                let pathName = link.pathname;
-                let path = pathName.replace(/\/+$/, '');
-                let parts = path.split('/');
-                let keywords = [];
 
-                parts.forEach(function(thing) {
-                    let words = thing.split('-');
-                    words.forEach(function(word) {
-                        if (word.length > 3) {
-                            keywords.push(word)
-                        }
-                    })
-                })
-
-                let uniqueKeywords = [...new Set(keywords)];
-
-                arr1.push({
-                    keywords: uniqueKeywords,
-                    link: link
-                })
+                let linkObj = createKeywords(link);
+                arr1.push(linkObj)
 
             })
 
             let arr2 = [];
             this.newLinks.forEach(function(link) {
-                let pathName = link.pathname;
-                let path = pathName.replace(/\/+$/, '');
-                let parts = path.split('/');
-                let keywords = [];
 
-                parts.forEach(function(thing) {
-                    let words = thing.split('-');
-                    words.forEach(function(word) {
-                        if (word.length > 3) {
-                            keywords.push(word)
-                        }
-                    })
-                })
-
-                let uniqueKeywords = [...new Set(keywords)];
-
-                arr2.push({
-                    keywords: uniqueKeywords,
-                    link: link
-                })
+                let linkObj = createKeywords(link);
+                arr2.push(linkObj)
 
             })
 
@@ -228,7 +217,8 @@ export default {
                         if (intersection.length >= 1) {
                             matches.push({
                                 rank: intersection.length,
-                                link: o2.link
+                                link: o2.link,
+                                similarities: intersection,
                             })
                         }
                     } else {
@@ -236,7 +226,8 @@ export default {
 
                             let obj = {
                                 rank: intersection.length,
-                                link: o2.link
+                                link: o2.link,
+                                similarities: intersection,
                             }
 
                             matches.push(obj)
@@ -268,13 +259,18 @@ export default {
 
             })
 
+            let probablyExactMatches = [];
             let singleMatches = [];
             let multiMatches = [];
 
             //split and sort redirects based on relevence
             redirects.forEach((item) => {
                 if (item.new.length == 1) {
-                    singleMatches.push(item)
+                    if (item.new[0].rank == 1) {
+                        probablyExactMatches.push(item)
+                    } else {
+                        singleMatches.push(item)
+                    }
                 }
                 else {
                     multiMatches.push(item)
@@ -285,7 +281,7 @@ export default {
             singleMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
             multiMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
 
-            let joinMatches = [...singleMatches, ...multiMatches];
+            let joinMatches = [].concat(probablyExactMatches, singleMatches, multiMatches)
 
             this.partialMatches = joinMatches;
             this.step = 3
