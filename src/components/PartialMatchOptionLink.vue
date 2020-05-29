@@ -26,7 +26,6 @@ export default {
               similarities = this.similarities;
 
             similarities.forEach((word) => {
-                console.log(word)
                 pathName = pathName.replace(word, `<span>${word}</span>`)
             })
 
