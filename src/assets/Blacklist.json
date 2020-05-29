@@ -1,0 +1,21 @@
+{
+  "name": "Blacklist",
+  "ignorelist": [
+    ".pdf",
+    ".eps",
+    ".svg",
+    ".img",
+    ".webp",
+    ".png",
+    ".jpg",
+    ".txt",
+    ".doc",
+    ".docx",
+    ".rtf",
+    ".csv",
+    ".xls",
+    ".xlsx",
+    ".xlsb",
+    ".xlsm"
+  ]
+}

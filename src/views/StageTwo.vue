@@ -123,6 +123,9 @@ export default {
                 arr.push(this.createArrObj(link))
             })
 
+            // Remove duplicates
+            arr = [...new Set(arr)];
+
             this.pushState(this.sortArray(arr))
         },
         validateURL(url) {

@@ -37,6 +37,18 @@
 
                 <div class="container">
                     <h2>Partial match</h2>
+
+                    <div class="ignore-opts">
+                        <p>We ignore the following file types:</p>
+                        <button class="button button-chip" :for="item" v-for="(item, i) in ignoreList.ignorelist" :key="i" @click="removeFiletypeFromIgnoreList(item)" title="Remove item">
+                            {{ item }}
+                        </button>
+                        <div class="ignore-additions">
+                            <input type="text" placeholder="Add .filetype to ignore-list..." v-model="ignoreListInput">
+                            <button class="button" @click="addFiletypeToIgnoreList">Add</button>
+                        </div>
+                    </div>
+
                     <p>Would you like us to try and find some <strong>partial</strong> matches?</p>
                     <div class="buttons">
                         <button class="button button-active" type="button" name="button" @click="findPartialMatches">Yes</button>
@@ -109,6 +121,7 @@ import PageHeading from '@/components/PageHeading.vue';
 import PartialMatchLink from '@/components/PartialMatchLink.vue';
 import MatchLinks from '@/components/MatchLinks.vue';
 import StageIndicator from '@/components/StageIndicator.vue'
+import Blacklist from '@/assets/Blacklist.json';
 
 export default {
     name: 'StageThree',
@@ -126,6 +139,8 @@ export default {
             partialMatches: [],
             createdRedirects: [],
             step: 1,
+            ignoreList: Blacklist,
+            ignoreListInput: '',
         }
     },
     created() {
@@ -138,6 +153,21 @@ export default {
         this.$store.state.remaining = [];
     },
     methods: {
+        addFiletypeToIgnoreList() {
+            let filetype = this.ignoreListInput;
+
+            if (filetype) {
+                this.ignoreList.ignorelist.push(filetype)
+            }
+
+            this.ignoreListInput = '';
+        },
+        removeFiletypeFromIgnoreList(item) {
+            let index = this.ignoreList.ignorelist.indexOf(item);
+            if (index !== -1) {
+                this.ignoreList.ignorelist.splice(index, 1);
+            }
+        },
         findExactMatches() {
             const arr1 = this.newLinks,
                   arr2 = this.oldLinks;
@@ -188,7 +218,8 @@ export default {
                 let linkObj = createKeywords(link);
                 arr1.push(linkObj)
 
-            })
+            });
+
 
             let arr2 = [];
             this.newLinks.forEach(function(link) {
@@ -198,10 +229,22 @@ export default {
 
             })
 
+            // Remove duplicate pathnames with parameters (Ex: https://website.com/link?param=1)
+            arr1 = [...new Map(arr1.map(item => [item.link.pathname, item])).values()]
+            arr2 = [...new Map(arr2.map(item => [item.link.pathname, item])).values()]
+
             let redirects = [];
+            const blackList = this.ignoreList.ignorelist;
+
             arr1.forEach(function(o1) {
                 let matches = [];
                 let count;
+
+                if (blackList.some(v => o1.link.href.includes(v))) {
+                    if (blackList.some(v => o1.link.href.endsWith(v))) {
+                        return false;
+                    }
+                }
 
                 arr2.forEach(function(o2) {
 
@@ -281,7 +324,7 @@ export default {
             singleMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
             multiMatches.sort((a, b) => b.new[0].rank - a.new[0].rank);
 
-            let joinMatches = [].concat(probablyExactMatches, singleMatches, multiMatches)
+            let joinMatches = [].concat(probablyExactMatches, singleMatches, multiMatches);
 
             this.partialMatches = joinMatches;
             this.step = 3
@@ -323,6 +366,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ignore-opts {
+    margin-bottom: 2em;
+}
+
+.ignore-additions {
+    margin-top: 1em;
+
+    button {
+        margin-left: 0.5em;
+    }
+}
+
 .fade-enter-active, .fade-leave-active {
     transition-duration: 0.5s;
     transition-property: height, opacity, transform;
