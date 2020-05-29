@@ -59,6 +59,16 @@ input[type="submit"] {
     &.button-small {
         font-size: 0.875rem;
     }
+
+    &.button-chip {
+        font-family: "Source Code Pro", monospace;
+        background: $color-p1;
+        color: #fff;
+        font-size: 0.875rem;
+        margin-right: 0.5em;
+        border: none;
+        font-weight: 500;
+    }
 }
 
 .buttons {
