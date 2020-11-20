@@ -174,12 +174,12 @@ export default {
 
             let remaining = arr2.filter(function(o1){
                 return !arr1.some(function(o2){
-                    return o1.pathname === o2.pathname;
+                    return o1.pathname.replace(/\/$/, "") === o2.pathname.replace(/\/$/, "");
                 });
             })
             let matches = arr2.filter(function(o1){
                 return arr1.some(function(o2){
-                    return o1.pathname === o2.pathname;
+                    return o1.pathname.replace(/\/$/, "") === o2.pathname.replace(/\/$/, "");
                 });
             })
 
