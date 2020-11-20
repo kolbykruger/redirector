@@ -2,7 +2,9 @@
   <div class="partial-match-link" v-if="!confirmed">
       <div class="compare">
           <p class="compare-old">
-              <span>{{ redirectData.old.pathname }}</span>
+              <a target="_blank" :href="$store.state.oldUrl.replace(/\/$/, '') + redirectData.old.pathname">
+                <span>{{ redirectData.old.pathname }}</span>
+              </a>
           </p>
           <div class="compare-new" :class="{'compare-error': stageError}">
               <div v-if="redirectData.new.length > 1">
@@ -15,7 +17,7 @@
                           @selectLink="partialOptionAction"
                           :class="{'link-selected': isSelected(item.link)}"
                           :data-rank="item.rank"
-                          :title="item.rank + ' similar word(s) found.'">
+                          :data-tooltip="redirectData.new[0].rank + ' similarities'">
                       </PartialMatchOptionLink>
                   </p>
               </div>
@@ -27,7 +29,7 @@
                     @optionSelected="partialOptionSelected"
                     :class="{'link-selected': isSelected(redirectData.new[0].link)}"
                     :data-rank="redirectData.new[0].rank"
-                    :title="redirectData.new[0].rank + ' similar word(s) found.'">
+                    :data-tooltip="redirectData.new[0].rank + ' similarities'">
                 </PartialMatchOptionLink>
               </div>
           </div>

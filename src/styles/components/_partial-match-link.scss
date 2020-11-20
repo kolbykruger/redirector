@@ -21,6 +21,16 @@
                 width: 100%;
                 transition: 150ms ease;
             }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+
+                &:hover,
+                &:focus {
+                    text-decoration: underline;
+                }
+            }
         }
 
         &-error {
@@ -43,9 +53,11 @@
         }
 
         .link {
+            position: relative;
             @include fluid('font-size', 1.125rem, 1.25rem);
             font-weight: 400;
             line-height: 1.5;
+            padding-right: 1.75em;
 
             &-selected {
                 font-weight: 600;
@@ -56,6 +68,57 @@
 
                 span {
                     border-bottom: dotted 2px lighten($color-p2, 15%);
+                }
+            }
+
+            &::after {
+                display: none;
+                position: absolute;
+                bottom: 0%;
+                right: 0.5em;
+                content: attr(data-tooltip);
+                max-width: 250px;
+                padding: 3px 6px;
+                color: #fff;
+                background-color: #4A5568;
+                background-repeat: repeat-x;
+                border-radius: 0.5em;
+                font-size: 11px;
+                transform: translateY(50%);
+                font-weight: 300;
+            }
+
+            &:hover,
+            &:focus-within {
+
+                a {
+                    opacity: 0.5;
+                }
+
+                &::after {
+                    display: block;
+                }
+            }
+
+            a {
+                position: absolute;
+                top: 0;
+                right: 0.75em;
+                transform: translate(0%, 50%);
+                color: #2D3748;
+                margin-left: 0.25em;
+                opacity: 0;
+                transition: 120ms ease;
+
+                svg {
+                    display: inline-flex;
+                    width: 0.75em;
+                    height: 0.75em;
+
+                }
+
+                &:hover {
+                        opacity: 1;
                 }
             }
 
