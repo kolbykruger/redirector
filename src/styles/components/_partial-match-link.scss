@@ -7,7 +7,7 @@
 
     .compare {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 6fr 6fr 1fr;
 
         &-old {
             font-weight: 600;
@@ -34,9 +34,9 @@
         }
 
         &-error {
-            outline: 2px solid #C53030;
+            outline: 2px solid #c53030;
             outline-offset: -2px;
-            background: #FED7D7;
+            background: #fed7d7;
         }
 
         &-new {
@@ -48,8 +48,21 @@
             }
         }
 
+        &-probability {
+            padding: 0.5em;
+            margin: 0;
+        }
+
         p {
             margin: 0;
+
+            &:nth-of-type(2) .link:after {
+                opacity: 0.5;
+            }
+
+            &:nth-of-type(3) .link:after {
+                opacity: 0.25;
+            }
         }
 
         .link {
@@ -72,31 +85,20 @@
             }
 
             &::after {
-                display: none;
                 position: absolute;
-                bottom: 0%;
-                right: 0.5em;
-                content: attr(data-tooltip);
-                max-width: 250px;
-                padding: 3px 6px;
-                color: #fff;
-                background-color: #4A5568;
-                background-repeat: repeat-x;
-                border-radius: 0.5em;
-                font-size: 11px;
-                transform: translateY(50%);
-                font-weight: 300;
+                top: 50%;
+                left: calc(100% + 1em);
+                content: attr(data-probability);
+                transform: translate(0, -50%);
+                outline: none;
+                padding: 0.65em 0.75em;
+                opacity: 0.75;
             }
 
             &:hover,
             &:focus-within {
-
                 a {
                     opacity: 0.5;
-                }
-
-                &::after {
-                    display: block;
                 }
             }
 
@@ -105,7 +107,7 @@
                 top: 0;
                 right: 0.75em;
                 transform: translate(0%, 50%);
-                color: #2D3748;
+                color: #2d3748;
                 margin-left: 0.25em;
                 opacity: 0;
                 transition: 120ms ease;
@@ -114,11 +116,10 @@
                     display: inline-flex;
                     width: 0.75em;
                     height: 0.75em;
-
                 }
 
                 &:hover {
-                        opacity: 1;
+                    opacity: 1;
                 }
             }
 
@@ -126,7 +127,6 @@
             &:focus {
                 span span {
                     border-color: $color-p2;
-
                 }
             }
         }
@@ -148,9 +148,7 @@
         border-color: $color-s1;
 
         .compare {
-
             > * {
-
                 &:last-of-type {
                     border-color: $color-s1;
                 }
