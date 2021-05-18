@@ -67,5 +67,7 @@ export default {
 <style lang="scss">
 .buttons a.button.button-beta {
     background: rgb(234, 68, 57);
+    color: #fff;
+    border: none;
 }
 </style>
